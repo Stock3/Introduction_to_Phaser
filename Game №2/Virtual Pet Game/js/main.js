@@ -28,13 +28,48 @@ var GameState = {
         this.pet.anchor.setTo(0.5);
 
         //custom properties
-        this.pet.customParams = { health: 100, fun: 100};
+        this.pet.customParams = { health: 100, fun: 100 };
+
+        //draggable pet
+        this.pet.inputEnabled = true;
+        this.pet.input.enableDrag();
 
         this.apple = this.game.add.sprite(72, 570, 'apple');
+        this.apple.anchor.setTo(0.5);
+        this.apple.inputEnabled = true;
+        this.apple.customParams = { health: 20 };
+        this.apple.events.onInputDown.add(this.pickItem, this);
+
         this.candy = this.game.add.sprite(144, 570, 'candy');
+        this.candy.anchor.setTo(0.5);
+        this.candy.inputEnabled = true;
+        this.candy.customParams = { health: -10, fun: 10 };
+        this.candy.events.onInputDown.add(this.pickItem, this);
+
         this.rubber_duck = this.game.add.sprite(216, 570, 'rubber_duck');
+        this.rubber_duck.anchor.setTo(0.5);
+        this.rubber_duck.inputEnabled = true;
+        this.rubber_duck.customParams = { fun: 20 };
+        this.rubber_duck.events.onInputDown.add(this.pickItem, this);
+
         this.rotate = this.game.add.sprite(288, 570, 'rotate');
+        this.rotate.anchor.setTo(0.5);
+        this.rotate.inputEnabled = true;
+        this.rotate.events.onInputDown.add(this.rotatePet, this);
+
+        this.buttons = [this.apple, this.candy, this.rubber_duck, this.rotate];
+
+        //nothing is selected
+        this.selectedItem = null;
     },
+
+    pickItem: function(sprite, event){
+        console.log('pick item');
+    },
+
+    rotatePet: function(sprite, event){
+        console.log('rotating...');
+    }
 };
 
 //initiate the Phaser framework
