@@ -127,6 +127,28 @@ var GameState = {
             var newItem = this.game.add.sprite(x, y, this.selectedItem.key);
             newItem.anchor.setTo(0.5);
             newItem.customParams = this.selectedItem.customParams;
+
+            this.uiBlocked = true;
+
+            var petMovement = this.game.add.tween(this.pet);
+            petMovement.to({x: x, y: y}, 700);
+            petMovement.onComplete.add(function(){
+
+                newItem.destroy();
+
+                this.uiBlocked = false;
+
+                var stat;
+                for(stat in newItem.customParams){
+                    if(newItem.customParams.hasOwnProperty(stat)){
+                        console.log(stat);
+                        this.pet.customParams[stat] += newItem.customParams[stat];
+                    }
+                }
+
+            }, this);
+
+            petMovement.start();
         }  
     }
 };
