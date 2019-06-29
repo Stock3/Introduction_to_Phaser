@@ -29,6 +29,9 @@ var GameState = {
         this.pet = this.game.add.sprite(100, 400, 'pet');
         this.pet.anchor.setTo(0.5);
 
+        //spritesheet animation
+        this.pet.animations.add('funnyfaces', [1, 2, 3, 2, 1], 7, false);
+
         //custom properties
         this.pet.customParams = { health: 100, fun: 100 };
 
@@ -130,16 +133,24 @@ var GameState = {
 
             this.uiBlocked = true;
 
+            //move the pet towards the item
             var petMovement = this.game.add.tween(this.pet);
             petMovement.to({x: x, y: y}, 700);
             petMovement.onComplete.add(function(){
 
+                //destroy the apple/candy/rubber_duck
                 newItem.destroy();
 
+                //play animation
+                this.pet.animations.play('funnyfaces');
+
+                //release the ui
                 this.uiBlocked = false;
 
                 var stat;
                 for(stat in newItem.customParams){
+                    //we only want the properties of the customParams object, not properties
+                    //this filters out all non-desired properties
                     if(newItem.customParams.hasOwnProperty(stat)){
                         console.log(stat);
                         this.pet.customParams[stat] += newItem.customParams[stat];
@@ -148,6 +159,7 @@ var GameState = {
 
             }, this);
 
+            //start the tween animation
             petMovement.start();
         }  
     }
